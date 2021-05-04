@@ -11,6 +11,6 @@ jobs:
         uses: fifsky/ssh-action@master
         with:
           command: |
-            echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"            
+            echo ${GITHUB_REF##*/}
           host: ${{ secrets.DO_HOST }}
           pass: ${{ secrets.DO_PASSWORD }}
