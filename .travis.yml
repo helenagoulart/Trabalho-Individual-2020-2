@@ -1,0 +1,37 @@
+language: generic
+
+branches:
+    only:
+        - master
+
+services: docker
+
+cache:
+  yarn: true
+
+before_install: 
+- docker-compose --version
+- sudo rm /usr/local/bin/docker-compose
+- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
+  -s`-`uname -m` > docker-compose
+- chmod +x docker-compose
+- sudo mv docker-compose /usr/local/bin
+- docker-compose --version
+
+jobs:
+- stage: build
+- script:
+  - docker-compose up --build -d
+
+- stage: test
+  - yarn test 
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: ssh deploy@67.205.150.225 'bash -s' < ./scripts/deploy.sh
+  on:
+    branch: master
+
+notifications:
+  email: false
