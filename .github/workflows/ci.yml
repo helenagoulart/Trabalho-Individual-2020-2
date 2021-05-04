@@ -15,8 +15,6 @@ jobs:
             rm -rf Trabalho-Individual-2020-2
             git clone https://github.com/helenagoulart/Trabalho-Individual-2020-2
             cd Trabalho-Individual-2020-2
-            echo ${GITHUB_REF##*/}
-            git checkout ${GITHUB_REF##*/}
-            git branch
+            ls
           host: ${{ secrets.DO_HOST }}
           pass: ${{ secrets.DO_PASSWORD }}
