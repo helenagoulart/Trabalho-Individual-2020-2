@@ -5,7 +5,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latests
+    runs-on: ubuntu-latest
     steps:
       - name: Build frontend
         uses: fifsky/ssh-action@master
