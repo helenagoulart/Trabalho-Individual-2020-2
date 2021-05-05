@@ -1,14 +1,14 @@
 
-name: Run CI Pipeline
+name: Run Deploy Pipeline
 
 # As ações ordenadas são em função da branch master
 on:
-  pull_request:
+  push:
     branches:
       - master
 
 jobs:
-  ci:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Build
@@ -17,20 +17,13 @@ jobs:
           # O Digital Ocean permite coordenar as ações de deploy e integração contínua. 
           # Neste caso ele entra na pasta do Trabalho Individual e ordena que a cada PR, devem ser
           # feitas as análises
-          # Linha 30: Build do projeto e teste do back, executado no Docker-compose
-          # Linha 31: Testes do front        
-          # Linha 34: Parando todos os conteineres 
+          # Linha 27: deploy do projeto 
           command: |
-            docker stop $(docker ps -a -q)
             cd 
-            cd CI
             rm -rf Trabalho-Individual-2020-2
             git clone https://github.com/helenagoulart/Trabalho-Individual-2020-2/
             cd Trabalho-Individual-2020-2
             git checkout ${{ github.event.pull_request.head.ref }}
             docker-compose up --build -d
-            cd client
-            docker build -t front-test -f Dockerfile.test .
-            docker run --rm front-test
           host: ${{ secrets.DO_HOST }}
           pass: ${{ secrets.DO_PASSWORD }}
