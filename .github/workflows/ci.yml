@@ -17,6 +17,9 @@ jobs:
           # O Digital Ocean permite coordenar as ações de deploy e integração contínua. 
           # Neste caso ele entra na pasta do Trabalho Individual e ordena que a cada PR, devem ser
           # feitas as análises
+          # Linha 30: Build do projeto e teste do back, executado no Docker-compose
+          # Linha 31: Testes do front        
+          # Linha 34: Parando todos os conteineres 
           command: |
             cd 
             cd CI
@@ -24,13 +27,10 @@ jobs:
             git clone https://github.com/helenagoulart/Trabalho-Individual-2020-2/
             cd Trabalho-Individual-2020-2
             git checkout ${{ github.event.pull_request.head.ref }}
-          # Build do projeto e teste do back, executado no Docker-compose
             docker-compose up --build -d
-          # Testes do front        
             cd client
             docker build -t front-test -f Dockerfile.test .
             docker run --rm front-test
-          # Parando todos os conteineres 
             docker stop $(docker ps -a -q)
           host: ${{ secrets.DO_HOST }}
           pass: ${{ secrets.DO_PASSWORD }}
