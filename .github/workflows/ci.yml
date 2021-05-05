@@ -4,14 +4,14 @@ name: Run CI Pipeline
 on: [push]
 
 jobs:
-  ci:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Build frontend
         uses: fifsky/ssh-action@master
         with:
           command: |
-            cd 
-            ls
+            echo ${{ github.event.head.ref }}
+            echo ${{ github.event.pull_request.head.ref }}
           host: ${{ secrets.DO_HOST }}
           pass: ${{ secrets.DO_PASSWORD }}
