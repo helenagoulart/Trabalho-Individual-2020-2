@@ -4,14 +4,19 @@ name: Run CI Pipeline
 on: [push]
 
 jobs:
-  build:
+  ci:
     runs-on: ubuntu-latest
     steps:
-      - name: Build frontend
+      - name: Build
         uses: fifsky/ssh-action@master
         with:
           command: |
-            echo ${{ github.event.head.ref }}
-            echo ${{ github.event.pull_request.head.ref }}
+            cd
+            rm -rf Trabalho-Individual-2020-2
+            git clone https://github.com/helenagoulart/Trabalho-Individual-2020-2
+            cd Trabalho-Individual-2020-2
+            raw=$(git branch -r --contains ${{ github.ref }})
+            branch=${raw/origin\/}
+            echo ::set-env name=BRANCH::$branch
           host: ${{ secrets.DO_HOST }}
           pass: ${{ secrets.DO_PASSWORD }}
