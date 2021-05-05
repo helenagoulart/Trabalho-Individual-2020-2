@@ -21,7 +21,6 @@ jobs:
           # Linha 31: Testes do front        
           # Linha 34: Parando todos os conteineres 
           command: |
-            docker stop $(docker ps -a -q)
             cd 
             cd CI
             rm -rf Trabalho-Individual-2020-2
@@ -32,5 +31,6 @@ jobs:
             cd client
             docker build -t front-test -f Dockerfile.test .
             docker run --rm front-test
+            docker stop $(docker ps -a -q)
           host: ${{ secrets.DO_HOST }}
           pass: ${{ secrets.DO_PASSWORD }}
